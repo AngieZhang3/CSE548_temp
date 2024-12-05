@@ -62,12 +62,22 @@ while True:
 
 #process Training data
 
-from data_processor import get_processed_data
+from data_preprocessor import get_processed_data
 # Process data using get_processed_data function
-categoryMappingsPath = 'path_to_category_mappings/'  # Specify the correct path
+categoryMappingsPath = 'CategoryMapping/'  # Specify the correct path
 X_train, y_train = get_processed_data(training_dataset, categoryMappingsPath, classType='binary')
 X_test, y_test = get_processed_data(testing_dataset, categoryMappingsPath, classType='binary')
+print("\nDataset sizes for selected scenario:")
+print(f"Training set - X_train shape: {X_train.shape}")
+print(f"Training set - y_train shape: {y_train.shape}")
+print(f"Testing set - X_test shape: {X_test.shape}")
+print(f"Testing set - y_test shape: {y_test.shape}")
 
+# To see class distribution
+from collections import Counter
+print("\nClass distribution:")
+print(f"Training set classes: {Counter(y_train)}")
+print(f"Testing set classes: {Counter(y_test)}")
 
 # Encoding categorical data (convert letters/words in numbers)
 # Reference: https://medium.com/@contactsunny/label-encoder-vs-one-hot-encoder-in-machine-learning-3fc273365621
@@ -129,7 +139,7 @@ classifier = Sequential()
 
 # Adding the input layer and the first hidden layer, 6 nodes, input_dim specifies the number of variables
 # rectified linear unit activation function relu, reference: https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/
-classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = X_train.shape[1]))
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = len(X_train[0])))
 
 # Adding the second hidden layer, 6 nodes
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
