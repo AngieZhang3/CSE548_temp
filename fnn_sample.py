@@ -29,9 +29,9 @@ NumEpoch=10
 #Scenario selection
 while True:
     print("choose scenario:")
-    print("1: Training-a1-a3.csv and Testing-a2-a4.csv")
-    print("2: Training-a1-a2.csv and Testing-a1.csv")
-    print("3: Training-a1-a2.csv and Testing-a1-a2-a3.csv")
+    print("1: Training: A1, A3, N and Testing: A2, A4, N")
+    print("2: Training: A1, A2, N and Testing: A1, N")
+    print("3: Training: A1, A2, N and Testing: A1, A2, A3, N")
 
     scenario_choice = input("Enter scenario number (1-3): ")
 
@@ -62,11 +62,6 @@ dataset_test = pd.read_csv(testing_dataset, header=None)
 
 #process Training data
 
-import data_preprocessor as dp
-X_train, y_train = dp.get_processed_data(TrainingData, './categoryMappings/', classType ='binary')
-X_test,  y_test  = dp.get_processed_data(TestingData,  './categoryMappings/', classType ='binary')
-
-'''
 X_train = dataset_train.iloc[:, 0:-2].values
 label_column_train = dataset_train.iloc[:, -2].values
 y_train = []
@@ -90,7 +85,7 @@ for i in range(len(label_column_test)):
         y_test.append(1)
 y_test = np.array(y_test)
 
-'''
+
 
 
 # Encoding categorical data (convert letters/words in numbers)
@@ -105,7 +100,7 @@ X[:, 3] = le.fit_transform(X[:, 3])
 onehotencoder = OneHotEncoder(categorical_features = [1, 2, 3])
 X = onehotencoder.fit_transform(X).toarray()
 '''
-'''
+
 # The following code work Python 3.7 or newer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -131,7 +126,7 @@ X_train = sc.fit_transform(X_train)  # Scaling to the range [0,1]
 X_test = sc.fit_transform(X_test)
 
 
-'''
+
 
 
 ########################################
