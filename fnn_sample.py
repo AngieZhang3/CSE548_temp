@@ -51,7 +51,7 @@ while True:
     
 # Import dataset.
 # Dataset is given in TraningData variable You can replace it with the file 
-# path such as â€œC:\Users\...\dataset.csvâ€™. 
+# path such as ¡°C:\Users\...\dataset.csv¡¯. 
 # The file can be a .txt as well. 
 # If the dataset file has header, then keep header=0 otherwise use header=none
 # reference: https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/
@@ -59,8 +59,14 @@ while True:
 dataset_train = pd.read_csv(training_dataset, header=None)
 dataset_test = pd.read_csv(testing_dataset, header=None)
 
+
 #process Training data
 
+import data_preprocessor as dp
+X_train, y_train = dp.get_processed_data(TrainingData, './categoryMappings/', classType ='binary')
+X_test,  y_test  = dp.get_processed_data(TestingData,  './categoryMappings/', classType ='binary')
+
+'''
 X_train = dataset_train.iloc[:, 0:-2].values
 label_column_train = dataset_train.iloc[:, -2].values
 y_train = []
@@ -84,6 +90,9 @@ for i in range(len(label_column_test)):
         y_test.append(1)
 y_test = np.array(y_test)
 
+'''
+
+
 # Encoding categorical data (convert letters/words in numbers)
 # Reference: https://medium.com/@contactsunny/label-encoder-vs-one-hot-encoder-in-machine-learning-3fc273365621
 # The following code work without warning in Python 3.6 or older. Newer versions suggest to use ColumnTransformer
@@ -95,6 +104,7 @@ X[:, 2] = le.fit_transform(X[:, 2])
 X[:, 3] = le.fit_transform(X[:, 3])
 onehotencoder = OneHotEncoder(categorical_features = [1, 2, 3])
 X = onehotencoder.fit_transform(X).toarray()
+'''
 '''
 # The following code work Python 3.7 or newer
 from sklearn.preprocessing import OneHotEncoder
@@ -121,14 +131,19 @@ X_train = sc.fit_transform(X_train)  # Scaling to the range [0,1]
 X_test = sc.fit_transform(X_test)
 
 
+'''
+
+
 ########################################
 # Part 2: Building FNN
 #######################################
 
 # Importing the Keras libraries and packages
 #import keras
-from keras.models import Sequential
-from keras.layers import Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+#from keras.models import Sequential
+#from keras.layers import Dense
 
 # Initialising the ANN
 # Reference: https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
@@ -146,8 +161,8 @@ classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 're
 classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
 
 # Compiling the ANN, 
-# Gradient descent algorithm â€œadamâ€œ, Reference: https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/
-# This loss is for a binary classification problems and is defined in Keras as â€œbinary_crossentropyâ€œ, Reference: https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/
+# Gradient descent algorithm ¡°adam¡°, Reference: https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/
+# This loss is for a binary classification problems and is defined in Keras as ¡°binary_crossentropy¡°, Reference: https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 # Fitting the ANN to the Training set
@@ -193,7 +208,7 @@ import matplotlib.pyplot as plt
 print('Plot the accuracy')
 # Keras 2.2.4 recognizes 'acc' and 2.3.1 recognizes 'accuracy'
 # use the command python -c 'import keras; print(keras.__version__)' on MAC or Linux to check Keras' version
-plt.plot(classifierHistory.history['acc'])
+plt.plot(classifierHistory.history['accuracy'])
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
