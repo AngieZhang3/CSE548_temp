@@ -109,7 +109,7 @@ ct = ColumnTransformer(
     remainder='passthrough'                         # Leave the rest of the columns untouched
 )
 X_train = np.array(ct.fit_transform(X_train), dtype=np.float)
-X_test = np.array(ct.fit_transform(X_test), dtype=np.float)
+X_test = np.array(ct.transform(X_test), dtype=np.float)
 # Splitting the dataset into the Training set and Test set (75% of data are used for training)
 # reference: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
 #from sklearn.model_selection import train_test_split
@@ -123,7 +123,7 @@ X_test = np.array(ct.fit_transform(X_test), dtype=np.float)
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)  # Scaling to the range [0,1]
-X_test = sc.fit_transform(X_test)
+X_test = sc.transform(X_test)
 
 
 
